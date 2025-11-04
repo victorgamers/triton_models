@@ -1,0 +1,25 @@
+name: "face_detr_sub"
+backend: "onnxruntime"
+max_batch_size: 8
+
+input [
+   {
+     name: "input0"
+     data_type: TYPE_FP32
+     dims: [3,640,640]
+   }
+]
+
+output [
+    {
+        name: "output0"
+        data_type: TYPE_FP32
+        dims: [16800,16]
+    }
+]
+
+instance_group [
+    {
+        kind: KIND_CPU
+    }
+]

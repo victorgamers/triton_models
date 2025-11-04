@@ -1,0 +1,26 @@
+name: "face_emotion"
+backend: "onnxruntime"
+max_batch_size: 0
+
+input [
+   {
+     name: "conv2d_input"
+     data_type: TYPE_FP32
+     dims: [-1,48,48,1]
+   } 
+]
+
+output [
+    {
+        name: "dense_2"
+        data_type: TYPE_FP32
+        dims: [-1,6]
+    }
+]
+
+
+instance_group [
+    {
+        kind: KIND_CPU
+    }
+]

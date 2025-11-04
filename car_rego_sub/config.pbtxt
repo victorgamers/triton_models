@@ -1,0 +1,32 @@
+name: "car_rego_sub"
+backend: "onnxruntime"
+max_batch_size: 0
+input [
+    {
+        name: "image_input"
+        data_type: TYPE_FP32
+        dims: [-1,3,48,96]
+    }
+  
+]
+
+output [
+    {
+        name: "tf_op_layer_ArgMax"
+        data_type: TYPE_INT32
+        dims: [-1,24]
+    },
+    {
+        name: "tf_op_layer_Max"
+        data_type: TYPE_FP32
+        dims: [-1,24]
+    }
+   
+]
+
+instance_group [
+    {
+        count: 1
+        kind: KIND_CPU
+    }
+]

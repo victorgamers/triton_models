@@ -1,0 +1,28 @@
+name: "unetp"
+backend: "onnxruntime"
+max_batch_size: 8
+input [
+  {
+    name: "input0"
+    data_type: TYPE_FP32
+    dims: [3,320,320]
+  }
+]
+
+output [
+   {
+     name: "output0"
+     data_type: TYPE_FP32
+     dims: [1,320,320]
+   }
+]
+
+
+instance_group [
+    {
+      kind: KIND_GPU
+      count: 1
+    }
+]
+
+

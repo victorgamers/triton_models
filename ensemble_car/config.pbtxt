@@ -1,0 +1,78 @@
+name: "ensemble_car"
+platform: "ensemble"
+max_batch_size: 0
+
+input [
+   {
+      name: "input"
+      data_type: TYPE_FP32
+      dims: [1,3,640,640]
+   }
+]
+
+output [
+   {
+     name: "tf_op_layer_ArgMax"
+     data_type: TYPE_INT32
+     dims: [1,24]
+   },
+   {
+     name: "tf_op_layer_Max"
+     data_type: TYPE_FP32
+     dims: [1,24]
+   }
+]
+
+ensemble_scheduling {
+    step [
+        {
+            model_name: "car_det_sub"
+            model_version: 1
+            input_map {
+               key: "input0"
+               value: "input"
+            }
+
+            output_map {
+               key: "output0"
+               value: "det_output"
+            }
+        },
+       
+        {
+           model_name: "postprocess_det_car_sub"
+           model_version: 1
+           input_map {
+               key: "det_input"
+               value: "det_output"
+           }
+
+           input_map {
+              key: "image_input"
+              value: "input"
+           }
+
+           output_map {
+               key: "image_output"
+               value: "output_image"
+           }
+        },
+        {
+            model_name: "car_rego_sub"
+            model_version: 1
+            input_map {
+                key: "image_input"
+                value: "output_image"
+            }
+            output_map {
+                key: "tf_op_layer_ArgMax"
+                value: "tf_op_layer_ArgMax"
+            }
+
+            output_map {
+                key: "tf_op_layer_Max"
+                value: "tf_op_layer_Max"
+            }
+        }
+    ]
+}

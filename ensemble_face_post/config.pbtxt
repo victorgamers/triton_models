@@ -1,0 +1,74 @@
+name: "ensemble_face_post"
+platform: "ensemble"
+max_batch_size: 0
+
+input [
+   {
+     name: "conv2d_input"
+     data_type: TYPE_FP32
+     dims: [-1,48,48,1]
+   }
+]
+
+output [
+    {
+        name: "dense_2"
+        data_type: TYPE_FP32
+        dims: [-1,8]
+    },
+    {
+        name: "temp_emotion"
+        data_type: TYPE_FP32
+        dims: [-1,6]
+    },
+    {
+        name: "temp_gender"
+        data_type: TYPE_FP32
+        dims: [-1,2]
+    }
+]
+
+ensemble_scheduling {
+    step [
+        {
+            model_name: "face_age"
+            model_version: 1
+            input_map {
+               key: "conv2d_input"
+               value: "conv2d_input"
+            }
+
+            output_map {
+               key: "dense_2"
+               value: "dense_2"
+            }
+        },
+        {
+            model_name: "face_gender"
+            model_version: 1
+            input_map {
+               key: "conv2d_input"
+               value: "conv2d_input"
+            }
+
+            output_map {
+               key: "dense_2"
+               value: "temp_gender"
+            }
+        },
+        {
+            model_name: "face_emotion"
+            model_version: 1
+            input_map {
+               key: "conv2d_input"
+               value: "conv2d_input"
+            }
+
+            output_map {
+               key: "dense_2"
+               value: "temp_emotion"
+            }
+        }
+    ]
+}
+
