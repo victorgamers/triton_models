@@ -1,1 +1,3 @@
-*.onnx
+c3d/1/model.onnx
+deeplab/1/model.onnx
+lane/1/model.onnx
