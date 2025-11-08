@@ -1,0 +1,26 @@
+name: "yolov12_tensorrt"
+platform: "tensorrt_plan"
+max_batch_size: 24
+
+input [
+  {
+    name: "images"
+    data_type: TYPE_FP32
+    dims: [3,640,640]
+  }
+]
+
+output [
+   {
+     name: "output0"
+     data_type: TYPE_FP32
+     dims: [8400,84]
+   }
+]
+
+instance_group [
+    {
+      count: 1
+      kind: KIND_GPU
+    }
+]
